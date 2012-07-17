@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jstest
+Bundle-SymbolicName: org.eclipse.rap.iscroll.jstest
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.rap.rwt.jstest,
+ org.eclipse.rap.iscroll;bundle-version="1.0.0"
+Service-Component: OSGI-INF/resourceContribution.xml, OSGI-INF/testContribution.xml
+Bundle-Vendor: EclipseSource
