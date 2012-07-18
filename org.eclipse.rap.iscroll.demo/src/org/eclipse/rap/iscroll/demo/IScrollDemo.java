@@ -40,7 +40,7 @@ public class IScrollDemo implements IEntryPoint {
     shell.setLayout( new GridLayout( 3, true ) );
     //shell.setMaximized( true );
     shell.setFullScreen( true );
-    createList( shell );
+    createList( null );
     createTable( shell );
     createScrolledComposite( shell );
     shell.open();
