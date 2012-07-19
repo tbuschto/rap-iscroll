@@ -18,9 +18,10 @@ import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 public abstract class Resource implements IResource {
 
   public static final IResource[] ALL_RESOURCES = new IResource[] {
-    new IScrollResource()
+    new IScrollResource(),
+    new IScrollMixinResource()
   };
-  
+
   private static final String PATH_PREFIX = "/org/eclipse/rap/iscroll/";
 
   private final String location;

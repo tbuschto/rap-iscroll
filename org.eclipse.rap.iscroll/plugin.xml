@@ -6,6 +6,9 @@
       <resource
             class="org.eclipse.rap.iscroll.internal.resources.IScrollResource">
       </resource>
+      <resource
+            class="org.eclipse.rap.iscroll.internal.resources.IScrollMixinResource">
+      </resource>
    </extension>
 
 </plugin>

@@ -9,7 +9,7 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-(function() {
+(function(){
 
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 
