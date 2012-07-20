@@ -8,35 +8,20 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-
-package org.eclipse.rap.iscroll.internal.resources;
+package org.eclipse.rap.iscroll.demo.internal;
 
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
 
-public abstract class Resource implements IResource {
-
-  public static final IResource[] ALL_RESOURCES = new IResource[] {
-    new IScrollResource(),
-    new IScrollMixinResource(),
-    new IScrollSupportResource(),
-  };
-
-  private static final String PATH_PREFIX = "/org/eclipse/rap/iscroll/";
-
-  private final String location;
-
-  public Resource( String location ) {
-    this.location = PATH_PREFIX + location;
-  }
+public class IScrollActivatorResrouce implements IResource {
 
   public ClassLoader getLoader() {
-    return Resource.class.getClassLoader();
+    return IScrollActivatorResrouce.class.getClassLoader();
   }
 
   public String getLocation() {
-    return location;
+    return "org/eclipse/rap/iscroll/demo/internal/IScrollActivator.js";
   }
 
   public String getCharset() {
@@ -54,5 +39,4 @@ public abstract class Resource implements IResource {
   public boolean isExternal() {
     return false;
   }
-
 }

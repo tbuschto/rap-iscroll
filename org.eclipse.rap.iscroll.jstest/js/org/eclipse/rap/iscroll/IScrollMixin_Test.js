@@ -9,6 +9,8 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
+org.eclipse.rap.iscroll.IScrollSupport.activate();
+
 (function(){
 
 var TestUtil = org.eclipse.rwt.test.fixture.TestUtil;

@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+@SuppressWarnings("restriction")
 public class IScrollDemo implements IEntryPoint {
 
   public int createUI() {

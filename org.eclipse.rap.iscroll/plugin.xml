@@ -9,6 +9,9 @@
       <resource
             class="org.eclipse.rap.iscroll.internal.resources.IScrollMixinResource">
       </resource>
+      <resource
+            class="org.eclipse.rap.iscroll.internal.resources.IScrollSupportResource">
+      </resource>
    </extension>
 
 </plugin>

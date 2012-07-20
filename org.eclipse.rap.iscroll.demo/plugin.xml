@@ -9,5 +9,11 @@
             path="/iscroll">
       </entrypoint>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.resources">
+      <resource
+            class="org.eclipse.rap.iscroll.demo.internal.IScrollActivatorResrouce">
+      </resource>
+   </extension>
 
 </plugin>

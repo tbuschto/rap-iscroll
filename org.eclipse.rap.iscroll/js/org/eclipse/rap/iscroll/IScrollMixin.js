@@ -104,7 +104,4 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
 } );
 
-qx.Class.__initializeClass( org.eclipse.swt.widgets.Scrollable );
-qx.Class.patch( org.eclipse.swt.widgets.Scrollable, org.eclipse.rap.iscroll.IScrollMixin );
-
 }());

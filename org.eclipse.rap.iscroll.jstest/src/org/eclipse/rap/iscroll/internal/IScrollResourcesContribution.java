@@ -24,6 +24,7 @@ public class IScrollResourcesContribution implements TestContribution {
   private static final String[] RESOURCES = new String[] {
     "IScroll.js",
     "IScrollMixin.js",
+    "IScrollSupport.js"
   };
 
   public String getName() {
