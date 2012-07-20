@@ -73,8 +73,8 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       scrollable.setHBarSelection( 100 );
       scrollable.setVBarSelection( 200 );
 
-      assertEquals( 100, scrollable.getIScroll().x );
-      assertEquals( 200, scrollable.getIScroll().y );
+      assertEquals( -100, scrollable.getIScroll().x );
+      assertEquals( -200, scrollable.getIScroll().y );
     },
 
     setUp : function() {

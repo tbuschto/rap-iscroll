@@ -97,10 +97,10 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScroll_Test", {
     testSetGetPosition : function() {
       var iScroll = new IScroll( wrapper );
 
-      iScroll.setScrollPosition( 10, 15 );
+      iScroll.setScrollPosition( -10, -15 );
 
-      assertEquals( 10, iScroll.x );
-      assertEquals( 15, iScroll.y );
+      assertEquals( -10, iScroll.x );
+      assertEquals( -15, iScroll.y );
     },
 
     setUp : function() {

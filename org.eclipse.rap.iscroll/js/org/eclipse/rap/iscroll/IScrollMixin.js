@@ -76,10 +76,10 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     _patchClientAreaWidget : function() {
       var that = this;
       this._clientArea.setScrollTop = function( value ) {
-        that._iscroll.setScrollPosition( that._iscroll.x, value );
+        that._iscroll.setScrollPosition( that._iscroll.x, ( value * -1 ) );
       };
       this._clientArea.setScrollLeft = function( value ) {
-        that._iscroll.setScrollPosition( value, that._iscroll.y );
+        that._iscroll.setScrollPosition( ( value * -1 ), that._iscroll.y );
       };
       this._clientArea._flushChildrenQueue = function() {
         this.constructor.prototype._flushChildrenQueue.call( this );

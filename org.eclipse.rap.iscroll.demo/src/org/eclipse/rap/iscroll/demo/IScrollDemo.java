@@ -38,9 +38,8 @@ public class IScrollDemo implements IEntryPoint {
     Display display = new Display();
     Shell shell = new Shell( display, SWT.NONE );
     shell.setLayout( new GridLayout( 3, true ) );
-    //shell.setMaximized( true );
     shell.setFullScreen( true );
-    createList( null );
+    createList( shell );
     createTable( shell );
     createScrolledComposite( shell );
     shell.open();
