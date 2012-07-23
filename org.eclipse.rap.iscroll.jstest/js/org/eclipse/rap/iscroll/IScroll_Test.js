@@ -95,6 +95,41 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScroll_Test", {
     },
 
     testSetGetPosition : function() {
+      var log = [];
+      var iScroll = new IScroll( wrapper, {
+        "onScroll" : function(){
+          log.push( [ this.x, this.y ] );
+        }
+      } );
+
+      iScroll.setScrollPosition( -10, -15 );
+      iScroll.setScrollPosition( 0, 0 );
+      iScroll.setScrollPosition( 0, 0 );
+
+      assertEquals( 2, log.length );
+      assertEquals( [ -10, -15 ], log[ 0 ] );
+      assertEquals( [ 0, 0 ], log[ 1 ] );
+    },
+
+    testSetPositionNegative : function() {
+      var iScroll = new IScroll( wrapper );
+
+      iScroll.setScrollPosition( 10, 15 );
+
+      assertEquals( 10, iScroll.x );
+      assertEquals( 15, iScroll.y );
+    },
+
+    testSetPositionOverMax : function() {
+      var iScroll = new IScroll( wrapper );
+
+      iScroll.setScrollPosition( -1000, -1100 );
+
+      assertEquals( -1000, iScroll.x );
+      assertEquals( -1100, iScroll.y );
+    },
+
+    testScrollEvent : function() {
       var iScroll = new IScroll( wrapper );
 
       iScroll.setScrollPosition( -10, -15 );

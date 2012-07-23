@@ -21,7 +21,7 @@ var IScroll = org.eclipse.rap.iscroll.IScroll;
 
 var shell;
 var scrollable;
-//clientArea;
+var clientArea;
 var content;
 
 qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
@@ -79,6 +79,48 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( -200, scrollable.getIScroll().y );
     },
 
+    testGetScrollPosition : function() {
+      scrollable.getIScroll().setScrollPosition( -40, -10 );
+
+      assertEquals( 40, clientArea.getScrollLeft() );
+      assertEquals( 10, clientArea.getScrollTop() );
+    },
+
+    testGetScrollPositionNegative : function() {
+      // iScroll can have out of bounds scroll positions when "bouncing"
+      scrollable.getIScroll().setScrollPosition( 40, 10 );
+
+      assertEquals( 40, scrollable.getIScroll().x );
+      assertEquals( 10, scrollable.getIScroll().y );
+      assertEquals( 0, clientArea.getScrollLeft() );
+      assertEquals( 0, clientArea.getScrollTop() );
+    },
+
+    testGetScrollPositionOverMax : function() {
+      scrollable.getIScroll().setScrollPosition( -950, -950 );
+
+      assertEquals( -950, scrollable.getIScroll().x );
+      assertEquals( -950, scrollable.getIScroll().y );
+      assertEquals( 910, clientArea.getScrollLeft() );
+      assertEquals( 910, clientArea.getScrollTop() );
+    },
+
+    testUserScrollEvents : function() {
+      var log = [];
+      scrollable.addEventListener( "userScroll", function(){
+        log.push( this._getScrollbarValues( scrollable ) );
+      }, this );
+
+      scrollable.getIScroll().setScrollPosition( -10, -10 );
+      scrollable.getIScroll().setScrollPosition( -40, -10 );
+
+      assertEquals( 3, log.length );
+      assertEquals( [ 10, 10 ], log[ 1 ] );
+      assertEquals( [ 40, 10 ], log[ 2 ] );
+    },
+
+    // TODO [tb] : test destroy
+
     setUp : function() {
       shell = TestUtil.createShellByProtocol( "w2" );
       Processor.processOperation( {
@@ -115,6 +157,13 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       scrollable = null;
       content = null;
       clientArea = null;
+    },
+
+    _getScrollbarValues : function( scrollable ) {
+      var result = [];
+      result[ 0 ] = scrollable._horzScrollBar.getValue();
+      result[ 1 ] = scrollable._vertScrollBar.getValue();
+      return result;
     }
 
   }

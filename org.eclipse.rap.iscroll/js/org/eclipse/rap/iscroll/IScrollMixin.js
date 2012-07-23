@@ -53,7 +53,9 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     },
 
     _onClientCreate : function( evt ) {
-      this.base( arguments, evt );
+      this._clientArea.prepareEnhancedBorder();
+      this._clientArea.setContainerOverflow( false );
+      qx.html.Scroll.disableScrolling( this._clientArea.getElement() );
       this._createIScroll();
     },
 
@@ -70,7 +72,13 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     // INTERNALS
 
     _createIScroll : function() {
-      this._iscroll = new IScroll( this._clientArea.getElement() );
+      var that = this;
+      var options = {
+        "onScroll" : function() {
+          that.__onscroll( {} );
+        }
+      };
+      this._iscroll = new IScroll( this._clientArea.getElement(), options );
     },
 
     _patchClientAreaWidget : function() {
@@ -80,6 +88,12 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       };
       this._clientArea.setScrollLeft = function( value ) {
         that._iscroll.setScrollPosition( ( value * -1 ), that._iscroll.y );
+      };
+      this._clientArea.getScrollTop = function() {
+        return that._getClientScrollTop();
+      };
+      this._clientArea.getScrollLeft = function() {
+        return that._getClientScrollLeft();
       };
       this._clientArea._flushChildrenQueue = function() {
         this.constructor.prototype._flushChildrenQueue.call( this );
@@ -98,6 +112,18 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       node.style.height = "0px";
       node.style.width = node.scrollWidth + "px";
       node.style.height = node.scrollHeight + "px";
+    },
+
+    _getClientScrollLeft : function() {
+      var actual = this._iscroll.x * -1;
+      var max = this._iscroll.maxScrollX * -1;
+      return Math.min( Math.max( 0, actual ), max );
+    },
+
+    _getClientScrollTop : function() {
+      var actual = this._iscroll.y * -1;
+      var max = this._iscroll.maxScrollY * -1;
+      return Math.min( Math.max( 0, actual ), max );
     }
 
   }

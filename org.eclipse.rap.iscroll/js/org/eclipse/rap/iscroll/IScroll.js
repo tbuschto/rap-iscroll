@@ -93,6 +93,8 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 			onScrollStart: null,
 			onBeforeScrollMove: null,
 			onScrollMove: null,
+      // RAP [tb] : event for all position changes
+			onScroll: null,
 			onBeforeScrollEnd: null,
 			onScrollEnd: null,
 			onTouchEnd: null,
@@ -168,9 +170,13 @@ iScroll.prototype = {
 			this.scroller.style.left = x + 'px';
 			this.scroller.style.top = y + 'px';
 		}
-
+		// RAP [tb] : fire event if changed:
+		var changed = this.x !== x || this.y !== y;
 		this.x = x;
 		this.y = y;
+		if( changed && this.options.onScroll ) {
+		  this.options.onScroll.call( this );
+		}
 	},
 
 	_start: function (e) {
