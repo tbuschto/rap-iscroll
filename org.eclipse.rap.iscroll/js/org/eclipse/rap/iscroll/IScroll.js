@@ -89,7 +89,10 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 			// Events
 			onRefresh: null,
-			onBeforeScrollStart: function (e) { e.preventDefault(); },
+			onBeforeScrollStart: function (e) {
+        // RAP [tb] : allow touch event to not supress virtual keyboard
+			  //e.preventDefault();
+			},
 			onScrollStart: null,
 			onBeforeScrollMove: null,
 			onScrollMove: null,

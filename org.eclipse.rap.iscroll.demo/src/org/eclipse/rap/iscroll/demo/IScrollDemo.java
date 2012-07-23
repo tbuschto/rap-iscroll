@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-@SuppressWarnings("restriction")
 public class IScrollDemo implements IEntryPoint {
 
   public int createUI() {
@@ -107,7 +106,9 @@ public class IScrollDemo implements IEntryPoint {
         public void widgetSelected( SelectionEvent e ) {
           MessageBox message = new MessageBox( composite.getShell() );
           message.setMessage( "SelectionEvent" );
-          DialogUtil.open( message, null );
+          System.out.println( "SelectionEvent" );
+       // MessageBox is somehow broken in Android
+          //DialogUtil.open( message, null );
         }
       } );
     }
@@ -126,7 +127,9 @@ public class IScrollDemo implements IEntryPoint {
         public void mouseDown( MouseEvent e ) {
           MessageBox message = new MessageBox( composite.getShell() );
           message.setMessage( "MouseDown" );
-          DialogUtil.open( message, null );
+          System.out.println( "MouseDown" );
+          // MessageBox is somehow broken in Android
+          //DialogUtil.open( message, null );
         }
         public void mouseDoubleClick( MouseEvent e ) {}
         public void mouseUp( MouseEvent e ) {}
