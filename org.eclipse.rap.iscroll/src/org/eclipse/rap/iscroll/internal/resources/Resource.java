@@ -11,8 +11,8 @@
 
 package org.eclipse.rap.iscroll.internal.resources;
 
-import org.eclipse.rwt.resources.IResource;
-import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
+import org.eclipse.rap.rwt.resources.IResource;
+import org.eclipse.rap.rwt.resources.IResourceManager.RegisterOptions;
 
 
 public abstract class Resource implements IResource {

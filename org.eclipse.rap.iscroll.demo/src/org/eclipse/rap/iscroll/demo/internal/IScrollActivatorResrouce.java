@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.eclipse.rap.iscroll.demo.internal;
 
-import org.eclipse.rwt.resources.IResource;
-import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
+import org.eclipse.rap.rwt.resources.IResource;
+import org.eclipse.rap.rwt.resources.IResourceManager.RegisterOptions;
 
 
 public class IScrollActivatorResrouce implements IResource {
