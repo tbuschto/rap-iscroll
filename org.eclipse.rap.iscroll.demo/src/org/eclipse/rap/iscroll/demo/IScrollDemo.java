@@ -53,12 +53,13 @@ public class IScrollDemo implements IEntryPoint {
   }
 
 
-  private void createList( Composite parent ) {
+  private List createList( Composite parent ) {
     List list = new List( parent, SWT.BORDER | SWT.V_SCROLL );
     list.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     for( int i = 0; i < 200; i++ ) {
       list.add( "ListItem " + i );
     }
+    return list;
   }
 
   private Table createTable( Composite parent ) {
@@ -81,7 +82,8 @@ public class IScrollDemo implements IEntryPoint {
     composite.setLayout( new GridLayout( 1, true ) );
     createLabelComposite( composite );
     createButtonComposite( composite );
-    createTable( composite ).setLayoutData( new GridData( SWT.DEFAULT, 400 ) );
+    createTable( composite ).setLayoutData( new GridData( 200, 200 ) );
+    createList( composite ).setLayoutData( new GridData( 200, 200 ) );
     createTextComposite( composite );
     scrolledComposite.setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     composite.layout();

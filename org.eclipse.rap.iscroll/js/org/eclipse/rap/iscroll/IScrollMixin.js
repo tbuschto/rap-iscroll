@@ -23,6 +23,13 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     this._patchClientAreaWidget();
   },
 
+  destruct : function() {
+    this._iscroll.destroy();
+    this._iscroll.wrapper = null;
+    this._iscroll.scroller = null;
+    this._iscroll = null;
+  },
+
   members : {
 
     /////////
@@ -76,6 +83,12 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       var options = {
         "onScroll" : function() {
           that.__onscroll( {} );
+        },
+        "onBeforeScrollStart" : function() {
+          that._onIScrollStart();
+        },
+        "onBeforeScrollEnd" : function() {
+          that._onIScrollEnd();
         }
       };
       this._iscroll = new IScroll( this._clientArea.getElement(), options );
@@ -124,6 +137,32 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       var actual = this._iscroll.y * -1;
       var max = this._iscroll.maxScrollY * -1;
       return Math.min( Math.max( 0, actual ), max );
+    },
+
+    _onIScrollStart : function() {
+      var iscrolls = this._findOuterIScrolls();
+      for( var i = 0; i < iscrolls.length; i++ ) {
+        iscrolls[ i ].disable();
+      }
+    },
+
+    _onIScrollEnd : function() {
+      var iscrolls = this._findOuterIScrolls();
+      for( var i = 0; i < iscrolls.length; i++ ) {
+        iscrolls[ i ].enable();
+      }
+    },
+
+    _findOuterIScrolls : function() {
+      var parent = this.getParent();
+      var result = [];
+      while( parent ) {
+        if( parent.getIScroll ) {
+          result.push( parent.getIScroll() );
+        }
+        parent = parent.getParent();
+      }
+      return result;
     }
 
   }
