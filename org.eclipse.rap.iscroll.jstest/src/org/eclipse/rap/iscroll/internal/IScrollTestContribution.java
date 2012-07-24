@@ -21,6 +21,7 @@ public class IScrollTestContribution implements TestContribution {
   private static final String PATH_PREFIX = "/org/eclipse/rap/iscroll/";
 
   private static final String[] RESOURCES = new String[] {
+    "IScrollTestUtil.js",
     "IScroll_Test.js",
     "IScrollMixin_Test.js"
   };

@@ -157,6 +157,11 @@ iScroll.prototype = {
 		}
 	},
 
+  // RAP [tb] : for testing :
+  getHasTouch : function() {
+    return hasTouch;
+  },
+
 	_resize: function () {
 		this.refresh();
 	},

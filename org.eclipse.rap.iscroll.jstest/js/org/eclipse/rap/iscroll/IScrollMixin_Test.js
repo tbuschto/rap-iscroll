@@ -19,6 +19,8 @@ var ObjectManager = org.eclipse.rwt.protocol.ObjectManager;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 
+var touch = org.eclipse.rap.iscroll.IScrollTestUtil.touch;
+
 var shell;
 var scrollable;
 var clientArea;
@@ -41,6 +43,18 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
     testIScrollElements : function() {
       assertIdentical( clientArea.getElement(), scrollable.getIScroll().wrapper );
       assertIdentical( clientArea._getTargetNode(), scrollable.getIScroll().scroller );
+    },
+
+    testDestroy : function() {
+      var iscroll = scrollable.getIScroll();
+
+      scrollable.destroy();
+      TestUtil.flush();
+
+      assertTrue( scrollable.isDisposed() );
+      assertNull( scrollable.getIScroll() );
+      assertNull( iscroll.scroller );
+      assertNull( iscroll.wrapper );
     },
 
     testNoOverflow : function() {
@@ -110,16 +124,57 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       scrollable.addEventListener( "userScroll", function(){
         log.push( this._getScrollbarValues( scrollable ) );
       }, this );
+      var iscroll = scrollable.getIScroll();
 
-      scrollable.getIScroll().setScrollPosition( -10, -10 );
-      scrollable.getIScroll().setScrollPosition( -40, -10 );
+      touch( "start", iscroll, [ 100, 100 ] );
+      touch( "move", iscroll, [ 90, 90 ] );
+      touch( "move", iscroll, [ 60, 90 ] );
+      touch( "end", iscroll, [ 60, 90 ] );
 
       assertEquals( 3, log.length );
       assertEquals( [ 10, 10 ], log[ 1 ] );
       assertEquals( [ 40, 10 ], log[ 2 ] );
     },
 
-    // TODO [tb] : test destroy
+    testDisableOuterScrolledIScroll : function() {
+      var log = [];
+      Processor.processOperation( {
+        "target" : "w5",
+        "action" : "create",
+        "type" : "rwt.widgets.ScrolledComposite",
+        "properties" : {
+          "style" : [],
+          "parent" : "w4",
+          "content" : "w6",
+          "scrollBarsVisible" : [ true, true ],
+          "bounds" : [ 0, 0, 100, 100 ]
+        }
+      } );
+      Processor.processOperation( {
+        "target" : "w6",
+        "action" : "create",
+        "type" : "rwt.widgets.Composite",
+        "properties" : {
+          "style" : [],
+          "parent" : "w3",
+          "bounds" : [ 0, 0, 1000, 1000 ]
+        }
+      } );
+      TestUtil.flush();
+      var innerScrollable = ObjectManager.getObject( "w5" );
+      var iscroll = scrollable.getIScroll();
+      var innerIscroll = innerScrollable.getIScroll();
+
+      log.push( iscroll.enabled );
+      touch( "start", innerIscroll, [ 100, 100 ] );
+      log.push( iscroll.enabled );
+      touch( "move", innerIscroll, [ 90, 90 ] );
+      log.push( iscroll.enabled );
+      touch( "end", innerIscroll, [ 60, 90 ] );
+      log.push( iscroll.enabled );
+
+      assertEquals( [ true, false, false, true ], log );
+    },
 
     setUp : function() {
       shell = TestUtil.createShellByProtocol( "w2" );

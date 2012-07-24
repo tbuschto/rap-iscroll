@@ -11,7 +11,11 @@
 
 (function(){
 
+// imports:
 var IScroll = org.eclipse.rap.iscroll.IScroll;
+
+// static imports:
+var touch = org.eclipse.rap.iscroll.IScrollTestUtil.touch;
 
 var div;
 var wrapper;
@@ -95,6 +99,15 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScroll_Test", {
     },
 
     testSetGetPosition : function() {
+      var iScroll = new IScroll( wrapper );
+
+      iScroll.setScrollPosition( -10, -15 );
+
+      assertEquals( -10, iScroll.x );
+      assertEquals( -15, iScroll.y );
+    },
+
+    testScrollEvent : function() {
       var log = [];
       var iScroll = new IScroll( wrapper, {
         "onScroll" : function(){
@@ -129,13 +142,65 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScroll_Test", {
       assertEquals( -1100, iScroll.y );
     },
 
-    testScrollEvent : function() {
-      var iScroll = new IScroll( wrapper );
+    testScrollByTouch : function() {
+      var log = [];
+      var iScroll = new IScroll( wrapper, {
+        "onScroll" : function(){
+          log.push( [ this.x, this.y ] );
+        },
+        "lockDirection" : false,
+        "bounce" : false
+      } );
 
-      iScroll.setScrollPosition( -10, -15 );
+      touch( "start", iScroll, [ 30, 40 ] );
+      touch( "move", iScroll, [ 30, 20 ] );
+      touch( "move", iScroll, [ 20, 20 ] );
+      touch( "end", iScroll, [ 20, 20 ] );
 
-      assertEquals( -10, iScroll.x );
-      assertEquals( -15, iScroll.y );
+      assertEquals( 2, log.length );
+      assertEquals( [ 0, -20 ], log[ 0 ] );
+      assertEquals( [ -10, -20 ], log[ 1 ] );
+    },
+
+    testDisable : function() {
+      var log = [];
+      var iScroll = new IScroll( wrapper, {
+        "onScroll" : function(){
+          log.push( [ this.x, this.y ] );
+        },
+        "lockDirection" : false,
+        "bounce" : false
+      } );
+      iScroll.disable();
+
+      touch( "start", iScroll, [ 30, 40 ] );
+      touch( "move", iScroll, [ 30, 20 ] );
+      touch( "move", iScroll, [ 20, 20 ] );
+      touch( "end", iScroll, [ 20, 20 ] );
+
+      assertEquals( 0, log.length );
+    },
+
+    testEnable : function() {
+      var log = [];
+      var iScroll = new IScroll( wrapper, {
+        "onScroll" : function(){
+          log.push( [ this.x, this.y ] );
+        },
+        "lockDirection" : false,
+        "bounce" : false
+      } );
+      iScroll.disable();
+      iScroll.enable();
+
+      touch( "start", iScroll, [ 30, 40 ] );
+      touch( "move", iScroll, [ 30, 20 ] );
+      touch( "move", iScroll, [ 20, 20 ] );
+      touch( "end", iScroll, [ 20, 20 ] );
+
+      assertEquals( 2, log.length );
+      assertEquals( [ 0, -20 ], log[ 0 ] );
+      assertEquals( [ -10, -20 ], log[ 1 ] );
     },
 
     setUp : function() {
