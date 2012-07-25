@@ -14,6 +14,7 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 (function(){
 
 var Scrollable = org.eclipse.swt.widgets.Scrollable;
+var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
 var Client = org.eclipse.rwt.Client;
 
@@ -32,7 +33,21 @@ org.eclipse.rap.iscroll.IScrollSupport = {
       this._active = true;
       qx.Class.__initializeClass( Scrollable );
       qx.Class.patch( Scrollable, IScrollMixin );
+      this._patchIScroll();
     }
+  },
+
+  _patchIScroll : function() {
+    var proto = IScroll.prototype;
+    var original = proto.handleEvent;
+    proto.handleEvent = function( ev ) {
+      try {
+        original.call( this, ev );
+      } catch( ex ) {
+        org.eclipse.rwt.ErrorHandler.processJavaScriptError( ex );
+      }
+    };
+
   }
 
 };

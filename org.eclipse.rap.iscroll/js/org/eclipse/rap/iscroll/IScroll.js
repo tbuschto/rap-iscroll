@@ -250,7 +250,12 @@ iScroll.prototype = {
 			newY = that.y + deltaY,
 			timestamp = e.timeStamp || Date.now();
 
+    // RAP [tb] : allow access to new position in beforeScrollMove event
+    that.newX = newX;
+    that.newY = newY;
 		if (that.options.onBeforeScrollMove) that.options.onBeforeScrollMove.call(that, e);
+		delete that.newX;
+		delete that.newY;
 
 		that.pointX = point.pageX;
 		that.pointY = point.pageY;

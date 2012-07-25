@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+﻿﻿/*******************************************************************************
  * Copyright (c) 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,7 +34,8 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
     };
     var fakeEv = {
       "type" : eventType,
-      "touches" : [ touch ],
+      "touches" : type === "end" ? [] : [ touch ],
+      "changedTouches" : [ touch ],
       "pageX" : pos[ 0 ],
       "pageY" : pos[ 1 ],
       "target" : iscroll.scroller,
