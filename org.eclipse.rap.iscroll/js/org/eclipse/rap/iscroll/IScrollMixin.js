@@ -21,6 +21,8 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
   construct : function() {
     this._iscroll = null;
     this._patchClientAreaWidget();
+    this._outerScrollables = null;
+    this._innerScrollable = null;
   },
 
   destruct : function() {
@@ -41,6 +43,13 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
     getClientAreaWidget : function() {
       return this._clientArea;
+    },
+
+    /**
+     * Sets the scrollable to activate after scrolling ends
+     */
+    setInnerScrollable : function( scrollable ) {
+      this._innerScrollable = scrollable;
     },
 
     //////////////
@@ -82,7 +91,10 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       var that = this;
       var options = {
         "onScroll" : function() {
-          that.__onscroll( {} );
+          that._onIScrollScroll();
+        },
+        "onBeforeScrollMove" : function( event ) {
+          that._onIScrollMove( event );
         },
         "onBeforeScrollStart" : function() {
           that._onIScrollStart();
@@ -140,29 +152,68 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     },
 
     _onIScrollStart : function() {
-      var iscrolls = this._findOuterIScrolls();
-      for( var i = 0; i < iscrolls.length; i++ ) {
-        iscrolls[ i ].disable();
+      var scrollables = this._getOuterScrollables();
+      for( var i = 0; i < scrollables.length; i++ ) {
+        scrollables[ i ].getIScroll().disable();
+      }
+    },
+
+    _onIScrollScroll : function() {
+      this.__onscroll( {} );
+    },
+
+    _onIScrollMove : function( event ) {
+      this.setBlockScrolling( false );
+      if( this._getOuterScrollables().length > 0 ) {
+        var outer = this._getOuterScrollables()[ 0 ].getIScroll();
+        var newX = this._iscroll.newX;
+        var maxX = this._iscroll.maxScrollX;
+        var newY = this._iscroll.newY;
+        var maxY = this._iscroll.maxScrollY;
+        var switchToOuter = false;
+        if( outer.hScroll ) {
+          switchToOuter = newX > 0 || newX < maxX;
+        }
+        if( !switchToOuter && outer.vScroll ) {
+          switchToOuter = newY > 0 || newY < maxY;
+        }
+        if( switchToOuter ) {
+          this._switchToOuterScrollable( event );
+        }
       }
     },
 
     _onIScrollEnd : function() {
-      var iscrolls = this._findOuterIScrolls();
-      for( var i = 0; i < iscrolls.length; i++ ) {
-        iscrolls[ i ].enable();
+      var scrollables = this._getOuterScrollables();
+      for( var i = 0; i < scrollables.length; i++ ) {
+        scrollables[ i ].getIScroll().enable();
+      }
+      if( this._innerScrollable ) {
+        this._innerScrollable.getIScroll().enable();
+        this._innerScrollable = null;
       }
     },
 
-    _findOuterIScrolls : function() {
-      var parent = this.getParent();
-      var result = [];
-      while( parent ) {
-        if( parent.getIScroll ) {
-          result.push( parent.getIScroll() );
+    _switchToOuterScrollable : function( event ) {
+      this._iscroll.disable();
+      var outer = this._getOuterScrollables()[ 0 ];
+      outer.getIScroll().enable();
+      outer.getIScroll()._start( event );
+      outer.setInnerScrollable( this );
+    },
+
+    _getOuterScrollables : function() {
+      if( this._outerScrollables == null ) {
+        var parent = this.getParent();
+        this._outerScrollables = [];
+        while( parent ) {
+          if( parent.getIScroll ) {
+            this._outerScrollables.push( parent );
+          }
+          parent = parent.getParent();
         }
-        parent = parent.getParent();
       }
-      return result;
+      return this._outerScrollables;
     }
 
   }
