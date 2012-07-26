@@ -203,6 +203,30 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScroll_Test", {
       assertEquals( [ -10, -20 ], log[ 1 ] );
     },
 
+    testDisableInScrollstart : function() {
+      var log = [];
+      var iScroll = new IScroll( wrapper, {
+        "onScroll" : function(){
+          log.push( [ this.x, this.y ] );
+        },
+        "lockDirection" : false,
+        "bounce" : false,
+        "onBeforeScrollStart" : function( e ) {
+          iScroll.disable();
+        },
+        "onScrollStart" : function() {
+          log.push( "start" );
+        }
+      } );
+
+      touch( "start", iScroll, [ 30, 40 ] );
+      touch( "move", iScroll, [ 30, 20 ] );
+      touch( "move", iScroll, [ 20, 20 ] );
+      touch( "end", iScroll, [ 20, 20 ] );
+
+      assertEquals( 0, log.length );
+    },
+
     setUp : function() {
       div = document.createElement( "div" );
       document.body.appendChild( div );

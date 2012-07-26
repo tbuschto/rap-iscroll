@@ -16,6 +16,8 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 var Scrollable = org.eclipse.swt.widgets.Scrollable;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
+var IScrollUtil = org.eclipse.rap.iscroll.IScrollUtil;
+var MobileWebkitSupport = org.eclipse.rwt.MobileWebkitSupport;
 var Client = org.eclipse.rwt.Client;
 
 org.eclipse.rap.iscroll.IScrollSupport = {
@@ -31,10 +33,15 @@ org.eclipse.rap.iscroll.IScrollSupport = {
   activate : function() {
     if( !this._active ) {
       this._active = true;
-      qx.Class.__initializeClass( Scrollable );
-      qx.Class.patch( Scrollable, IScrollMixin );
       this._patchIScroll();
+      this._patchScrollable();
+      this._patchMobileWebkitSupport();
     }
+  },
+
+  _patchScrollable : function() {
+    qx.Class.__initializeClass( Scrollable );
+    qx.Class.patch( Scrollable, IScrollMixin );
   },
 
   _patchIScroll : function() {
@@ -47,7 +54,24 @@ org.eclipse.rap.iscroll.IScrollSupport = {
         org.eclipse.rwt.ErrorHandler.processJavaScriptError( ex );
       }
     };
+  },
 
+  _patchMobileWebkitSupport : function() {
+    this._wrap( MobileWebkitSupport, "_initVirtualScroll", function( widget ) {
+      IScrollUtil.disableOuterScrollables( widget );
+      this._touchSession.scrollable = widget;
+    } );
+    this._wrap( MobileWebkitSupport, "_finishVirtualScroll", function( widget ) {
+      IScrollUtil.enableOuterScrollables( this._touchSession.scrollable );
+    } );
+  },
+
+  _wrap : function( context, originalName, wrapper ) {
+    var originalFunction = context[ originalName ];
+    context[ originalName ] = function() {
+      originalFunction.apply( context, arguments );
+      wrapper.apply( context, arguments );
+    };
   }
 
 };

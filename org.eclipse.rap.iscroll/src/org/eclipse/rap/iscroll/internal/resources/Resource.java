@@ -21,6 +21,7 @@ public abstract class Resource implements IResource {
     new IScrollResource(),
     new IScrollMixinResource(),
     new IScrollSupportResource(),
+    new IScrollUtilResource()
   };
 
   private static final String PATH_PREFIX = "/org/eclipse/rap/iscroll/";

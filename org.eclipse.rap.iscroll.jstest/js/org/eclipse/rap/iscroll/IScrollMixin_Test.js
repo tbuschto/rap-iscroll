@@ -14,10 +14,9 @@ org.eclipse.rap.iscroll.IScrollSupport.activate();
 (function(){
 
 var TestUtil = org.eclipse.rwt.test.fixture.TestUtil;
-var Processor = org.eclipse.rwt.protocol.Processor;
-var ObjectManager = org.eclipse.rwt.protocol.ObjectManager;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
+var IScrollTestUtil = org.eclipse.rap.iscroll.IScrollTestUtil;
 
 var touch = org.eclipse.rap.iscroll.IScrollTestUtil.touch;
 
@@ -31,10 +30,6 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
   extend : qx.core.Object,
 
   members : {
-
-    testScrollableIncludesMixin : function() {
-      assertTrue( qx.Class.hasMixin( scrollable.constructor, IScrollMixin ) );
-    },
 
     testCreateIScroll: function() {
       assertTrue( scrollable.getIScroll() instanceof IScroll );
@@ -162,6 +157,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       log.push( iscroll.enabled );
       touch( "start", innerIscroll, [ 100, 100 ] );
+      touch( "start", iscroll, [ 100, 100 ] );
       log.push( iscroll.enabled );
       touch( "move", innerIscroll, [ 90, 90 ] );
       log.push( iscroll.enabled );
@@ -175,9 +171,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var log = [];
       var innerScrollable = this._createInnerScrollable();
       var innerIscroll = innerScrollable.getIScroll();
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 100, 100 ] );
+      touch( "start", iscroll, [ 100, 100 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 90, 90] );
       log.push( innerIscroll.enabled );
@@ -196,6 +194,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 100, 100 ] );
       log.push( innerIscroll.enabled );
@@ -214,6 +213,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       log.push( iscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( iscroll.enabled );
       touch( "move", innerIscroll, [ 100, 100 ] );
       log.push( iscroll.enabled );
@@ -230,6 +230,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerIscroll = innerScrollable.getIScroll();
 
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       touch( "move", innerIscroll, [ 90, 91 ] );
       touch( "move", iscroll, [ 90, 121 ] );
       touch( "end", iscroll, [ 90, 121 ] );
@@ -245,6 +246,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerIscroll = innerScrollable.getIScroll();
 
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       touch( "move", innerIscroll, [ 91, 90 ] );
       touch( "move", iscroll, [ 121, 90 ] );
       touch( "end", iscroll, [ 121, 90 ] );
@@ -261,6 +263,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       innerIscroll.setScrollPosition( -910, -910 );
 
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       touch( "move", innerIscroll, [ 90, 89 ] );
       touch( "move", iscroll, [ 90, 79 ] );
       touch( "end", iscroll, [ 90, 79 ] );
@@ -277,6 +280,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       innerIscroll.setScrollPosition( -910, -910 );
 
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       touch( "move", innerIscroll, [ 89, 90 ] );
       touch( "move", iscroll, [ 79, 90 ] );
       touch( "end", iscroll, [ 79, 90 ] );
@@ -291,9 +295,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       content.setHeight( 90 );
       TestUtil.flush();
       var innerIscroll = innerScrollable.getIScroll();
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 90, 100 ] );
       log.push( innerIscroll.enabled );
@@ -309,9 +315,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       content.setWidth( 90 );
       TestUtil.flush();
       var innerIscroll = innerScrollable.getIScroll();
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 100, 90 ] );
       log.push( innerIscroll.enabled );
@@ -326,9 +334,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerScrollable = this._createInnerScrollable();
       TestUtil.flush();
       var innerIscroll = innerScrollable.getIScroll();
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 90, 100 ] );
       log.push( innerIscroll.enabled );
@@ -343,9 +353,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerScrollable = this._createInnerScrollable();
       TestUtil.flush();
       var innerIscroll = innerScrollable.getIScroll();
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 100, 90 ] );
       log.push( innerIscroll.enabled );
@@ -362,9 +374,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerIscroll = innerScrollable.getIScroll();
       innerScrollable.getIScroll().setScrollPosition( -910, -910 );
       scrollable.getIScroll().setScrollPosition( -910, -910 );
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 90, 80 ] );
       log.push( innerIscroll.enabled );
@@ -381,9 +395,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       var innerIscroll = innerScrollable.getIScroll();
       innerScrollable.getIScroll().setScrollPosition( -910, -910 );
       scrollable.getIScroll().setScrollPosition( -910, -910 );
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 80, 90 ] );
       log.push( innerIscroll.enabled );
@@ -399,9 +415,11 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       TestUtil.flush();
       var innerIscroll = innerScrollable.getIScroll();
       scrollable.getIScroll().setScrollPosition( -20, -20 );
+      var iscroll = scrollable.getIScroll();
 
       log.push( innerIscroll.enabled );
       touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
       log.push( innerIscroll.enabled );
       touch( "move", innerIscroll, [ 90, 80 ] );
       log.push( innerIscroll.enabled );
@@ -412,7 +430,6 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       assertEquals( [ true, true, true, true, true ], log );
     },
-
 
     testResetOnDisable : function() {
       var innerScrollable = this._createInnerScrollable();
@@ -427,33 +444,53 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( 0, innerScrollable.getIScroll().y );
     },
 
+//    testDisableIScrollOnGridScroll : function() {
+//      var grid = this._createGrid();
+//      var log = [];
+//      var iscroll = scrollable.getIScroll();
+//      iscroll.setScrollPosition( -20, -20 );
+//      var target = grid.getRowContainer().getChildren()[ 0 ].getElement();
+//      log.push( iscroll.enabled );
+//      touch( "start", iscroll, [ 90, 90 ], target );
+//      log.push( iscroll.enabled );
+//      touch( "move", iscroll, [ 100, 100 ], target );
+//      log.push( iscroll.enabled );
+//      touch( "end", iscroll, [ 100, 100 ], target );
+//      log.push( iscroll.enabled );
+//
+//      assertEquals( [ true, false, false, false ], log );
+//    },
+//
+//    testReEableIScrollAfterGridScroll : function() {
+//      var grid = this._createGrid();
+//      var log = [];
+//      var iscroll = scrollable.getIScroll();
+//      iscroll.setScrollPosition( -20, -20 );
+//      var target = grid.getRowContainer().getChildren()[ 0 ].getElement();
+//      log.push( iscroll.enabled );
+//      touch( "start", iscroll, [ 90, 90 ], target );
+//      log.push( iscroll.enabled );
+//      touch( "move", iscroll, [ 100, 100 ], target );
+//      log.push( iscroll.enabled );
+//      touch( "end", iscroll, [ 100, 100 ], target );
+//      log.push( iscroll.enabled );
+//      touch( "start", iscroll, [ 90, 90 ] );
+//      log.push( iscroll.enabled );
+//
+//      assertEquals( [ true, false, false, false, true ], log );
+//    },
+//    TestUtil.flush();
+//    return org.eclipse.rwt.protocol.ObjectManager.getObject( "w5" );
+
+
+    /////////
+    // Helper
+
     setUp : function() {
       shell = TestUtil.createShellByProtocol( "w2" );
-      Processor.processOperation( {
-        "target" : "w3",
-        "action" : "create",
-        "type" : "rwt.widgets.ScrolledComposite",
-        "properties" : {
-          "style" : [],
-          "parent" : "w2",
-          "content" : "w4",
-          "scrollBarsVisible" : [ true, true ],
-          "bounds" : [ 0, 0, 100, 100 ]
-        }
-      } );
-      Processor.processOperation( {
-        "target" : "w4",
-        "action" : "create",
-        "type" : "rwt.widgets.Composite",
-        "properties" : {
-          "style" : [],
-          "parent" : "w3",
-          "bounds" : [ 0, 0, 1000, 1000 ]
-        }
-      } );
-      scrollable = ObjectManager.getObject( "w3" );
-      content = ObjectManager.getObject( "w4" );
+      scrollable = IScrollTestUtil.createScrolledComposite();
       clientArea = scrollable.getClientAreaWidget();
+      content = clientArea.getFirstChild();
       TestUtil.flush();
     },
 
@@ -473,30 +510,9 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
     },
 
     _createInnerScrollable : function() {
-      Processor.processOperation( {
-        "target" : "w5",
-        "action" : "create",
-        "type" : "rwt.widgets.ScrolledComposite",
-        "properties" : {
-          "style" : [],
-          "parent" : "w4",
-          "content" : "w6",
-          "scrollBarsVisible" : [ true, true ],
-          "bounds" : [ 0, 0, 100, 100 ]
-        }
-      } );
-      Processor.processOperation( {
-        "target" : "w6",
-        "action" : "create",
-        "type" : "rwt.widgets.Composite",
-        "properties" : {
-          "style" : [],
-          "parent" : "w3",
-          "bounds" : [ 0, 0, 1000, 1000 ]
-        }
-      } );
+      var result = IScrollTestUtil.createChildScrolledComposite();
       TestUtil.flush();
-      return ObjectManager.getObject( "w5" );
+      return result;
     }
 
   }
