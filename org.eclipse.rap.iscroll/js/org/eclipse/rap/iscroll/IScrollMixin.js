@@ -23,6 +23,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     this._patchClientAreaWidget();
     this._outerScrollables = null;
     this._innerScrollable = null;
+    this._blockSwitch = false;
   },
 
   destruct : function() {
@@ -152,6 +153,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     },
 
     _onIScrollStart : function() {
+      this._blockSwitch = false;
       var scrollables = this._getOuterScrollables();
       for( var i = 0; i < scrollables.length; i++ ) {
         scrollables[ i ].getIScroll().disable();
@@ -159,23 +161,26 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     },
 
     _onIScrollScroll : function() {
+      this._blockSwitch = true;
       this.__onscroll( {} );
     },
 
     _onIScrollMove : function( event ) {
       this.setBlockScrolling( false );
-      if( this._getOuterScrollables().length > 0 ) {
+      if( !this._blockSwitch && this._getOuterScrollables().length > 0 ) {
         var outer = this._getOuterScrollables()[ 0 ].getIScroll();
         var newX = this._iscroll.newX;
         var maxX = this._iscroll.maxScrollX;
+        var outerMaxX = outer.maxScrollX;
         var newY = this._iscroll.newY;
         var maxY = this._iscroll.maxScrollY;
+        var outerMaxY = outer.maxScrollY;
         var switchToOuter = false;
         if( outer.hScroll ) {
-          switchToOuter = newX > 0 || newX < maxX;
+          switchToOuter = ( newX > 0 && outer.x < 0 ) || ( newX < maxX && outer.y > outerMaxX );
         }
         if( !switchToOuter && outer.vScroll ) {
-          switchToOuter = newY > 0 || newY < maxY;
+          switchToOuter = ( newY > 0 && outer.y < 0 ) || ( newY < maxY && outer.y > outerMaxY );
         }
         if( switchToOuter ) {
           this._switchToOuterScrollable( event );
