@@ -273,7 +273,7 @@ iScroll.prototype = {
 		that.absDistX = m.abs(that.distX);
 		that.absDistY = m.abs(that.distY);
 
-		if (that.absDistX < 6 && that.absDistY < 6) {
+		if( !that.enabled || ( that.absDistX < 6 && that.absDistY < 6 ) ) {
 			return;
 		}
 
