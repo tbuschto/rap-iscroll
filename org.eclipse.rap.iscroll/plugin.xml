@@ -4,6 +4,9 @@
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
+            class="org.eclipse.rap.iscroll.internal.resources.IScrollUtilResource">
+      </resource>
+      <resource
             class="org.eclipse.rap.iscroll.internal.resources.IScrollResource">
       </resource>
       <resource

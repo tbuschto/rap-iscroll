@@ -89,10 +89,7 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 			// Events
 			onRefresh: null,
-			onBeforeScrollStart: function (e) {
-        // RAP [tb] : allow touch event to not supress virtual keyboard
-			  //e.preventDefault();
-			},
+			onBeforeScrollStart: function (e) { e.preventDefault(); },
 			onScrollStart: null,
 			onBeforeScrollMove: null,
 			onScrollMove: null,
@@ -192,9 +189,10 @@ iScroll.prototype = {
 			point = hasTouch ? e.touches[0] : e,
 			matrix, x, y;
 
-		if (!that.enabled) return;
-
+    // RAP [tb] : switched order to allow to enable/disable in event
 		if (that.options.onBeforeScrollStart) that.options.onBeforeScrollStart.call(that, e);
+
+		if (!that.enabled) return;
 
 		if (that.options.useTransition) that._transitionTime(0);
 

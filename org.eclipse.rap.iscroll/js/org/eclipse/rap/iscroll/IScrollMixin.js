@@ -14,7 +14,7 @@ qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 (function(){
 
 var IScroll = org.eclipse.rap.iscroll.IScroll;
-
+var IScrollUtil = org.eclipse.rap.iscroll.IScrollUtil;
 
 qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
@@ -27,10 +27,12 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
   },
 
   destruct : function() {
-    this._iscroll.destroy();
-    this._iscroll.wrapper = null;
-    this._iscroll.scroller = null;
-    this._iscroll = null;
+    if( this._iscroll != null ) {
+      this._iscroll.destroy();
+      this._iscroll.wrapper = null;
+      this._iscroll.scroller = null;
+      this._iscroll = null;
+    }
   },
 
   members : {
@@ -154,10 +156,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
     _onIScrollStart : function() {
       this._blockSwitch = false;
-      var scrollables = this._getOuterScrollables();
-      for( var i = 0; i < scrollables.length; i++ ) {
-        scrollables[ i ].getIScroll().disable();
-      }
+      IScrollUtil.disableOuterScrollables( this );
     },
 
     _onIScrollScroll : function() {
@@ -167,8 +166,8 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
     _onIScrollMove : function( event ) {
       this.setBlockScrolling( false );
-      if( !this._blockSwitch && this._getOuterScrollables().length > 0 ) {
-        var outer = this._getOuterScrollables()[ 0 ].getIScroll();
+      if( !this._blockSwitch && IScrollUtil.getOuterScrollables( this ).length > 0 ) {
+        var outer = IScrollUtil.getOuterScrollables( this )[ 0 ].getIScroll();
         var newX = this._iscroll.newX;
         var maxX = this._iscroll.maxScrollX;
         var outerMaxX = outer.maxScrollX;
@@ -189,10 +188,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     },
 
     _onIScrollEnd : function() {
-      var scrollables = this._getOuterScrollables();
-      for( var i = 0; i < scrollables.length; i++ ) {
-        scrollables[ i ].getIScroll().enable();
-      }
+      IScrollUtil.enableOuterScrollables( this );
       if( this._innerScrollable ) {
         this._innerScrollable.getIScroll().enable();
         this._innerScrollable = null;
@@ -201,25 +197,12 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
     _switchToOuterScrollable : function( event ) {
       this._iscroll.disable();
-      var outer = this._getOuterScrollables()[ 0 ];
+      var outer = IScrollUtil.getOuterScrollables( this )[ 0 ];
       outer.getIScroll().enable();
       outer.getIScroll()._start( event );
       outer.setInnerScrollable( this );
-    },
-
-    _getOuterScrollables : function() {
-      if( this._outerScrollables == null ) {
-        var parent = this.getParent();
-        this._outerScrollables = [];
-        while( parent ) {
-          if( parent.getIScroll ) {
-            this._outerScrollables.push( parent );
-          }
-          parent = parent.getParent();
-        }
-      }
-      return this._outerScrollables;
     }
+
 
   }
 

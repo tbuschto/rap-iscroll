@@ -23,7 +23,8 @@ public class IScrollTestContribution implements TestContribution {
   private static final String[] RESOURCES = new String[] {
     "IScrollTestUtil.js",
     "IScroll_Test.js",
-    "IScrollMixin_Test.js"
+    "IScrollMixin_Test.js",
+    "IScrollSupport_Test.js",
   };
 
   public String getName() {
