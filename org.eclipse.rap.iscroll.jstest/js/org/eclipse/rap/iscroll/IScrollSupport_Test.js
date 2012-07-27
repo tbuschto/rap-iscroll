@@ -42,7 +42,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollSupport_Test", {
       touch( "move", iscroll, [ 50, 100 ], element );
       touch( "end", iscroll, [ 50, 100 ], element );
 
-      assertEquals( 4, grid.getTopItemIndex() );
+      assertEquals( 4, grid._topItemIndex );
     },
 
     testScrollGridWithoutScrollable : function() {
