@@ -14,7 +14,6 @@ org.eclipse.rap.iscroll.IScrollSupport.activate();
 (function(){
 
 var TestUtil = org.eclipse.rwt.test.fixture.TestUtil;
-var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollTestUtil = org.eclipse.rap.iscroll.IScrollTestUtil;
 

@@ -36,6 +36,8 @@ org.eclipse.rap.iscroll.IScrollSupport = {
       this._patchIScroll();
       this._patchScrollable();
       this._patchMobileWebkitSupport();
+      MobileWebkitSupport.setTouchScrolling( true ); // required for grid out scrolling
+      MobileWebkitSupport.setTouchScrolling = function(){};
     }
   },
 
@@ -58,11 +60,25 @@ org.eclipse.rap.iscroll.IScrollSupport = {
 
   _patchMobileWebkitSupport : function() {
     this._wrap( MobileWebkitSupport, "_initVirtualScroll", function( widget ) {
-      IScrollUtil.disableOuterScrollables( widget );
-      this._touchSession.scrollable = widget;
+      var scrollable;
+      if( widget instanceof org.eclipse.rwt.widgets.GridRow ) {
+        scrollable = widget.getParent().getParent();
+      } else {
+        scrollable = this._findScrollable( widget );
+      }
+      IScrollUtil.disableOuterScrollables( scrollable );
+      this._touchSession.virtualScrollable = scrollable;
     } );
-    this._wrap( MobileWebkitSupport, "_finishVirtualScroll", function( widget ) {
-      IScrollUtil.enableOuterScrollables( this._touchSession.scrollable );
+    this._wrap( MobileWebkitSupport, "_handleTouchMove", function( event ) {
+      event.preventDefault();
+      if( this._touchSession.virtualScrollable && this._touchSession.type.scroll ) {
+        var outer = IScrollUtil.getOuterScrollables( this._touchSession.virtualScrollable )[ 0 ];
+        outer.getIScroll().enable();
+        outer.getIScroll()._start( event );
+      }
+    } );
+    this._wrap( MobileWebkitSupport, "_finishVirtualScroll", function() {
+      IScrollUtil.enableOuterScrollables( this._touchSession.virtualScrollable );
     } );
   },
 
