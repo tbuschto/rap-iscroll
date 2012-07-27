@@ -151,6 +151,12 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
     return ObjectManager.getObject( "w5" );
   },
 
+  getScrollBarValues : function( scrollable ) {
+    var result = [];
+    result[ 0 ] = scrollable._horzScrollBar.getValue();
+    result[ 1 ] = scrollable._vertScrollBar.getValue();
+    return result;
+  }
 
 };
 
