@@ -116,7 +116,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
     testUserScrollEvents : function() {
       var log = [];
       scrollable.addEventListener( "userScroll", function(){
-        log.push( this._getScrollbarValues( scrollable ) );
+        log.push( IScrollTestUtil.getScrollBarValues( scrollable ) );
       }, this );
       var iscroll = scrollable.getIScroll();
 
@@ -133,7 +133,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
     testReleaseBlockScrolling : function() {
       var log = [];
       scrollable.addEventListener( "userScroll", function(){
-        log.push( this._getScrollbarValues( scrollable ) );
+        log.push( IScrollTestUtil.getScrollBarValues( scrollable ) );
       }, this );
       var iscroll = scrollable.getIScroll();
       scrollable.setBlockScrolling( true );
@@ -408,7 +408,7 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( [ true, true, true, true ], log );
     },
 
-    testDontDisableInnerIScrollYWhenAlreadyScrolled : function() {
+    testDontDisableInnerIScrollYWhenAlreadyScrolledOtherDirection : function() {
       var log = [];
       var innerScrollable = this._createInnerScrollable();
       TestUtil.flush();
@@ -430,6 +430,98 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( [ true, true, true, true, true ], log );
     },
 
+    testDontDisableInnerIScrollYWhenAlreadyScrolledSameDirectionYMin : function() {
+      var log = [];
+      var innerScrollable = this._createInnerScrollable();
+      TestUtil.flush();
+      var innerIscroll = innerScrollable.getIScroll();
+      innerIscroll.setScrollPosition( 0, -2 );
+      scrollable.getIScroll().setScrollPosition( -20, -20 );
+      var iscroll = scrollable.getIScroll();
+
+      log.push( innerIscroll.enabled );
+      touch( "start", innerIscroll, [ 90, 80 ] );
+      touch( "start", iscroll, [ 90, 80 ] );
+      log.push( innerIscroll.enabled );
+      touch( "move", innerIscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "end", innerIscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+
+      assertEquals( [ true, true, true, true ], log );
+      assertEquals( [ 0, 0 ], IScrollTestUtil.getScrollBarValues( innerScrollable ) );
+      assertEquals( [ 20, 20 ], IScrollTestUtil.getScrollBarValues( scrollable ) );
+    },
+
+    testDontDisableInnerIScrollYWhenAlreadyScrolledSameDirectionYMax : function() {
+      var log = [];
+      var innerScrollable = this._createInnerScrollable();
+      TestUtil.flush();
+      var innerIscroll = innerScrollable.getIScroll();
+      innerIscroll.setScrollPosition( 0, -908 );
+      var iscroll = scrollable.getIScroll();
+      iscroll.setScrollPosition( -20, -20 );
+
+      log.push( innerIscroll.enabled );
+      touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "move", innerIscroll, [ 90, 80 ] );
+      log.push( innerIscroll.enabled );
+      touch( "end", innerIscroll, [ 90, 80 ] );
+      log.push( innerIscroll.enabled );
+
+      assertEquals( [ true, true, true, true ], log );
+      assertEquals( [ 0, 910 ], IScrollTestUtil.getScrollBarValues( innerScrollable ) );
+      assertEquals( [ 20, 20 ], IScrollTestUtil.getScrollBarValues( scrollable ) );
+    },
+
+    testDontDisableInnerIScrollXWhenAlreadyScrolledSameDirectionXMin : function() {
+      var log = [];
+      var innerScrollable = this._createInnerScrollable();
+      TestUtil.flush();
+      var innerIscroll = innerScrollable.getIScroll();
+      innerIscroll.setScrollPosition( -2, 0 );
+      scrollable.getIScroll().setScrollPosition( -20, -20 );
+      var iscroll = scrollable.getIScroll();
+
+      log.push( innerIscroll.enabled );
+      touch( "start", innerIscroll, [ 80, 90 ] );
+      touch( "start", iscroll, [ 80, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "move", innerIscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "end", innerIscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+
+      assertEquals( [ true, true, true, true ], log );
+      assertEquals( [ 0, 0 ], IScrollTestUtil.getScrollBarValues( innerScrollable ) );
+      assertEquals( [ 20, 20 ], IScrollTestUtil.getScrollBarValues( scrollable ) );
+    },
+
+    testDontDisableInnerIScrollXWhenAlreadyScrolledSameDirectionXMax : function() {
+      var log = [];
+      var innerScrollable = this._createInnerScrollable();
+      TestUtil.flush();
+      var innerIscroll = innerScrollable.getIScroll();
+      innerIscroll.setScrollPosition( -908, 0 );
+      var iscroll = scrollable.getIScroll();
+      iscroll.setScrollPosition( -20, -20 );
+
+      log.push( innerIscroll.enabled );
+      touch( "start", innerIscroll, [ 90, 90 ] );
+      touch( "start", iscroll, [ 90, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "move", innerIscroll, [ 80, 90 ] );
+      log.push( innerIscroll.enabled );
+      touch( "end", innerIscroll, [ 80, 90 ] );
+      log.push( innerIscroll.enabled );
+
+      assertEquals( [ true, true, true, true ], log );
+      assertEquals( [ 910, 0 ], IScrollTestUtil.getScrollBarValues( innerScrollable ) );
+      assertEquals( [ 20, 20 ], IScrollTestUtil.getScrollBarValues( scrollable ) );
+    },
+
     testResetOnDisable : function() {
       var innerScrollable = this._createInnerScrollable();
       scrollable.getIScroll().setScrollPosition( -30, -40 );
@@ -442,45 +534,6 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       assertEquals( 0, innerScrollable.getIScroll().y );
     },
-
-//    testDisableIScrollOnGridScroll : function() {
-//      var grid = this._createGrid();
-//      var log = [];
-//      var iscroll = scrollable.getIScroll();
-//      iscroll.setScrollPosition( -20, -20 );
-//      var target = grid.getRowContainer().getChildren()[ 0 ].getElement();
-//      log.push( iscroll.enabled );
-//      touch( "start", iscroll, [ 90, 90 ], target );
-//      log.push( iscroll.enabled );
-//      touch( "move", iscroll, [ 100, 100 ], target );
-//      log.push( iscroll.enabled );
-//      touch( "end", iscroll, [ 100, 100 ], target );
-//      log.push( iscroll.enabled );
-//
-//      assertEquals( [ true, false, false, false ], log );
-//    },
-//
-//    testReEableIScrollAfterGridScroll : function() {
-//      var grid = this._createGrid();
-//      var log = [];
-//      var iscroll = scrollable.getIScroll();
-//      iscroll.setScrollPosition( -20, -20 );
-//      var target = grid.getRowContainer().getChildren()[ 0 ].getElement();
-//      log.push( iscroll.enabled );
-//      touch( "start", iscroll, [ 90, 90 ], target );
-//      log.push( iscroll.enabled );
-//      touch( "move", iscroll, [ 100, 100 ], target );
-//      log.push( iscroll.enabled );
-//      touch( "end", iscroll, [ 100, 100 ], target );
-//      log.push( iscroll.enabled );
-//      touch( "start", iscroll, [ 90, 90 ] );
-//      log.push( iscroll.enabled );
-//
-//      assertEquals( [ true, false, false, false, true ], log );
-//    },
-//    TestUtil.flush();
-//    return org.eclipse.rwt.protocol.ObjectManager.getObject( "w5" );
-
 
     /////////
     // Helper
@@ -499,13 +552,6 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       scrollable = null;
       content = null;
       clientArea = null;
-    },
-
-    _getScrollbarValues : function( scrollable ) {
-      var result = [];
-      result[ 0 ] = scrollable._horzScrollBar.getValue();
-      result[ 1 ] = scrollable._vertScrollBar.getValue();
-      return result;
     },
 
     _createInnerScrollable : function() {
