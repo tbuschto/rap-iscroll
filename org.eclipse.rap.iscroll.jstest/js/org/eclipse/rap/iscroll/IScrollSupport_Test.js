@@ -72,6 +72,21 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollSupport_Test", {
       assertEquals( -50, iscroll.y );
     },
 
+    testScrollScrollableInsteadOfGrid : function() {
+      var grid = IScrollTestUtil.createGrid();
+      TestUtil.flush();
+      var element = grid.getRowContainer().getFirstChild().getElement();
+      scrollable.getIScroll().setScrollPosition( -50, -50 );
+
+      touch( "start", iscroll, [ 50, 100 ], element );
+      touch( "move", iscroll, [ 50, 101 ], element );
+      touch( "move", iscroll, [ 50, 131 ], element );
+      touch( "end", iscroll, [ 50, 131 ], element );
+
+      assertEquals( -20, iscroll.y );
+    },
+
+
     /////////
     // Helper
 
