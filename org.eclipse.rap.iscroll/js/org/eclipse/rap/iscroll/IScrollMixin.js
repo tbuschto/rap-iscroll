@@ -176,11 +176,13 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
         var outerMaxY = outer.maxScrollY;
         var switchToOuter = false;
         if( outer.hScroll ) {
-          switchToOuter =    ( this._iscroll.x === 0 && newX > 0 && outer.x < 0 )
+          switchToOuter =    ( !this._horzScrollBar.getDisplay() && newX < 0 )
+                          || ( this._iscroll.x === 0 && newX > 0 && outer.x < 0 )
                           || ( this._iscroll.x === maxX && newX < maxX && outer.y > outerMaxX );
         }
         if( !switchToOuter && outer.vScroll ) {
-          switchToOuter =    ( this._iscroll.y === 0 && newY > 0 && outer.y < 0 )
+          switchToOuter =    ( !this._vertScrollBar.getDisplay() && newY < 0 )
+                          || ( this._iscroll.y === 0 && newY > 0 && outer.y < 0 )
                           || ( this._iscroll.y === maxY && newY < maxY && outer.y > outerMaxY );
         }
         if( switchToOuter ) {
