@@ -130,6 +130,18 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( [ 40, 10 ], log[ 2 ] );
     },
 
+    testMovePreventDefault : function() {
+      var log = [];
+      var iscroll = scrollable.getIScroll();
+
+      log.push( touch( "start", iscroll, [ 100, 100 ] ) );
+      log.push( touch( "move", iscroll, [ 90, 90 ] ) );
+      log.push( touch( "move", iscroll, [ 60, 90 ] ) );
+      log.push( touch( "end", iscroll, [ 60, 90 ] ) );
+
+      assertEquals( [ false, true, true, false ], log );
+    },
+
     testReleaseBlockScrolling : function() {
       var log = [];
       scrollable.addEventListener( "userScroll", function(){

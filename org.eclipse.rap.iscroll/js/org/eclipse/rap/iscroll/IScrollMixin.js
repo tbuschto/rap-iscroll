@@ -166,6 +166,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
     _onIScrollMove : function( event ) {
       this.setBlockScrolling( false );
+      event.preventDefault();
       if( !this._blockSwitch && IScrollUtil.getOuterScrollables( this ).length > 0 ) {
         var outer = IScrollUtil.getOuterScrollables( this )[ 0 ].getIScroll();
         var newX = this._iscroll.newX;
