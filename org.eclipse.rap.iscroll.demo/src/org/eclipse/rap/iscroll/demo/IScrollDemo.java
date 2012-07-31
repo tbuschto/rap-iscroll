@@ -56,7 +56,7 @@ public class IScrollDemo implements IEntryPoint {
   private List createList( Composite parent ) {
     List list = new List( parent, SWT.BORDER | SWT.V_SCROLL );
     list.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-    for( int i = 0; i < 200; i++ ) {
+    for( int i = 0; i < 50; i++ ) {
       list.add( "ListItem " + i );
     }
     return list;
@@ -66,10 +66,22 @@ public class IScrollDemo implements IEntryPoint {
     Table table = new Table( parent, SWT.BORDER | SWT.FULL_SELECTION );
     table.setLinesVisible( true );
     table.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-    for( int i = 0; i < 200; i++ ) {
+    for( int i = 0; i < 50; i++ ) {
       new TableItem( table, SWT.NONE ).setText( "TableItem " + i );
     }
     return table;
+  }
+
+  private Composite createMiniScrolledComposite( Composite parent ) {
+    final ScrolledComposite scrolledComposite = new ScrolledComposite( parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+    scrolledComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+    final Composite composite = createLabelComposite( scrolledComposite, 80 );
+    scrolledComposite.setContent( composite );
+    scrolledComposite.setExpandHorizontal( true );
+    scrolledComposite.setExpandVertical( true );
+    scrolledComposite.setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
+    composite.layout();
+    return scrolledComposite;
   }
 
   private void createScrolledComposite( Composite parent ) {
@@ -80,10 +92,12 @@ public class IScrollDemo implements IEntryPoint {
     scrolledComposite.setExpandHorizontal( true );
     scrolledComposite.setExpandVertical( true );
     composite.setLayout( new GridLayout( 1, true ) );
-    createLabelComposite( composite );
+    createLabelComposite( composite, 40 );
     createButtonComposite( composite );
     createTable( composite ).setLayoutData( new GridData( 200, 200 ) );
     createList( composite ).setLayoutData( new GridData( 200, 200 ) );
+    createMiniScrolledComposite( composite ).setLayoutData( new GridData( 200, 200 ) );
+    createMiniScrolledComposite( composite ).setLayoutData( new GridData( 200, 200 ) );
     createTextComposite( composite );
     scrolledComposite.setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     composite.layout();
@@ -119,11 +133,11 @@ public class IScrollDemo implements IEntryPoint {
   }
 
   @SuppressWarnings("serial")
-  private void createLabelComposite( final Composite composite ) {
+  private Composite createLabelComposite( final Composite composite, int number ) {
     Composite labelComposite = new Composite( composite, SWT.NONE );
     labelComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
     labelComposite.setLayout( new GridLayout( 4, true ) );
-    for( int i = 0; i < 40; i++ ) {
+    for( int i = 0; i < number; i++ ) {
       Label label = new Label( labelComposite, SWT.NONE );
       label.setText( "Label " + i );
       label.setLayoutData( new GridData( SWT.DEFAULT, SWT.DEFAULT ) );
@@ -139,6 +153,7 @@ public class IScrollDemo implements IEntryPoint {
         public void mouseUp( MouseEvent e ) {}
       } );
     }
+    return labelComposite;
   }
 
 }
