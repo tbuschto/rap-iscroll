@@ -36,7 +36,7 @@ org.eclipse.rap.iscroll.IScrollSupport = {
       this._patchIScroll();
       this._patchScrollable();
       this._patchMobileWebkitSupport();
-      MobileWebkitSupport.setTouchScrolling( true ); // required for grid out scrolling
+      MobileWebkitSupport.setTouchScrolling( true ); // required for grid outer scrolling
       MobileWebkitSupport.setTouchScrolling = function(){};
     }
   },

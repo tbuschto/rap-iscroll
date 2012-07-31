@@ -41,6 +41,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "target" : target
     };
     var fakeEv = {
+      "_prevented" : false,
       "type" : eventType,
       "touches" : type === "end" ? [] : [ touch ],
       "changedTouches" : [ touch ],
@@ -50,7 +51,9 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
       "clientY" : pos[ 1 ],
       "target" : target,
       "button" : 0,
-      "preventDefault" : function(){}
+      "preventDefault" : function(){
+        this._prevented = true;
+      }
     };
     var itemFunction = function( i ){
       var result = this[ i ];
@@ -65,6 +68,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
       fakeEv.type = "touch" + type;
       MobileWebkitSupport._onTouchEvent( fakeEv );
     }
+    return fakeEv._prevented;
   },
 
   createScrolledComposite : function() {
