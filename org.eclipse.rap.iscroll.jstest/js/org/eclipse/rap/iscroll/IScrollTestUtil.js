@@ -127,7 +127,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
     org.eclipse.rwt.protocol.Processor.processOperation( {
       "target" : "w5",
       "action" : "create",
-      "type" : "rwt.widgets.Grid",
+      "type" : "rwt.widgets.Tree",
       "properties" : {
         "style" : [],
         "parent" : "w4",
@@ -144,7 +144,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
       org.eclipse.rwt.protocol.Processor.processOperation( {
         "target" : "w" + id,
         "action" : "create",
-        "type" : "rwt.widgets.GridItem",
+        "type" : "rwt.widgets.TreeItem",
         "properties" : {
           "parent" : "w5",
           "index": i

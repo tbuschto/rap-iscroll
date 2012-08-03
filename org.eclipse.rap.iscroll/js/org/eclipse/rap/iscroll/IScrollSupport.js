@@ -61,7 +61,7 @@ org.eclipse.rap.iscroll.IScrollSupport = {
   _patchMobileWebkitSupport : function() {
     this._wrap( MobileWebkitSupport, "_initVirtualScroll", function( widget ) {
       var scrollable;
-      if( widget instanceof org.eclipse.rwt.widgets.GridRow ) {
+      if( widget instanceof org.eclipse.rwt.widgets.TreeRow ) {
         scrollable = widget.getParent().getParent();
       } else {
         scrollable = this._findScrollable( widget );
