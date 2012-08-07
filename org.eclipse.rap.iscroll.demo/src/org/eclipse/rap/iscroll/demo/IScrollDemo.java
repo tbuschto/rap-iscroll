@@ -12,6 +12,7 @@
 package org.eclipse.rap.iscroll.demo;
 
 import org.eclipse.rwt.lifecycle.IEntryPoint;
+import org.eclipse.rwt.widgets.DialogCallback;
 import org.eclipse.rwt.widgets.DialogUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -19,10 +20,12 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -31,6 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolTip;
 
 public class IScrollDemo implements IEntryPoint {
 
@@ -39,9 +43,10 @@ public class IScrollDemo implements IEntryPoint {
     Shell shell = new Shell( display, SWT.NONE );
     shell.setLayout( new GridLayout( 3, true ) );
     shell.setFullScreen( true );
-    createList( shell );
-    createTable( shell );
-    createScrolledComposite( shell );
+    List list = createList( shell );
+    //createTable( shell );
+    ScrolledComposite scrolledComposite = createScrolledComposite( shell );
+    createTestControls( shell, scrolledComposite, list );
     shell.open();
     while( !shell.isDisposed() ) {
       if( !display.readAndDispatch() ) {
@@ -60,6 +65,73 @@ public class IScrollDemo implements IEntryPoint {
       list.add( "ListItem " + i );
     }
     return list;
+  }
+
+  private void createTestControls( final Composite parent, final ScrolledComposite scrolled, final List list ) {
+    Composite composite = new Composite( parent, SWT.BORDER  );
+    composite.setLayout( new GridLayout( 2, false ) );
+    composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+    Button lastC = new Button( composite, SWT.PUSH );
+    lastC.setText( "show last control" );
+    lastC.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        Composite content = ( Composite )scrolled.getContent();
+        Control[] children = content.getChildren();
+        scrolled.showControl( children[ children.length - 1 ] );
+      }
+    } );
+    Button firstC = new Button( composite, SWT.PUSH );
+    firstC.setText( "show first control" );
+    firstC.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        Composite content = ( Composite )scrolled.getContent();
+        Control[] children = content.getChildren();
+        scrolled.showControl( children[ 0 ] );
+      }
+    } );
+    Button lastItem = new Button( composite, SWT.PUSH );
+    lastItem.setText( "show last item" );
+    lastItem.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        list.select( list.getItemCount() - 1 );
+        list.showSelection();
+      }
+    } );
+    Button firstItem = new Button( composite, SWT.PUSH );
+    firstItem.setText( "show first item" );
+    firstItem.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        list.select( 0 );
+        list.showSelection();
+      }
+    } );
+    Button whereIs = new Button( composite, SWT.PUSH );
+    whereIs.setText( "y scroll offset" );
+    whereIs.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        message( parent, "Scrolled Composite content at " + scrolled.getContent().getLocation().y );
+      }
+    } );
+    Button pointTo = new Button( composite, SWT.PUSH );
+    pointTo.setText( "translate point" );
+    pointTo.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( SelectionEvent e ) {
+        Composite content = ( Composite )scrolled.getContent();
+        Control[] children = content.getChildren();
+        final Shell shell = parent.getShell();
+        shell.setVisible( false ); // work around Android issue with z-index  (unrelated?)
+        ToolTip toolTip = new ToolTip( shell, SWT.ICON_INFORMATION );
+        toolTip.setMessage( "Second control of ScrolledComposite is here" );
+        toolTip.setLocation( children[ 1 ].toDisplay( 0, 0 ) );
+        toolTip.setAutoHide( true );
+        toolTip.setVisible( true );
+        Display.getCurrent().timerExec( 1000, new Runnable() {
+          public void run() {
+            shell.setVisible( true );
+          }
+        } );
+      }
+    } );
   }
 
   private Table createTable( Composite parent ) {
@@ -84,7 +156,7 @@ public class IScrollDemo implements IEntryPoint {
     return scrolledComposite;
   }
 
-  private void createScrolledComposite( Composite parent ) {
+  private ScrolledComposite createScrolledComposite( Composite parent ) {
     final ScrolledComposite scrolledComposite = new ScrolledComposite( parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     scrolledComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     final Composite composite = new Composite( scrolledComposite, SWT.NONE );
@@ -101,6 +173,7 @@ public class IScrollDemo implements IEntryPoint {
     createTextComposite( composite );
     scrolledComposite.setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     composite.layout();
+    return scrolledComposite;
   }
 
   private void createTextComposite( final Composite composite ) {
@@ -122,11 +195,7 @@ public class IScrollDemo implements IEntryPoint {
       button.setText( "Button " + i );
       button.addSelectionListener( new SelectionAdapter() {
         public void widgetSelected( SelectionEvent e ) {
-          MessageBox message = new MessageBox( composite.getShell() );
-          message.setMessage( "SelectionEvent" );
-          System.out.println( "SelectionEvent" );
-       // MessageBox is somehow broken in Android
-          //DialogUtil.open( message, null );
+          message( composite, "SelectionEvent" );
         }
       } );
     }
@@ -154,6 +223,18 @@ public class IScrollDemo implements IEntryPoint {
       } );
     }
     return labelComposite;
+  }
+
+  private void message( final Composite composite, String msg ) {
+    final Shell shell = composite.getShell();
+    shell.setVisible( false ); // work around Android issue with z-index (unrelated)
+    MessageBox message = new MessageBox( shell );
+    message.setMessage( msg );
+    DialogUtil.open( message, new DialogCallback() {
+      public void dialogClosed( int returnCode ) {
+        shell.setVisible( true );
+      }
+    } );
   }
 
 }
