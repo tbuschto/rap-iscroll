@@ -71,7 +71,10 @@ org.eclipse.rap.iscroll.IScrollSupport = {
     } );
     this._wrap( MobileWebkitSupport, "_handleTouchMove", function( event ) {
       event.preventDefault();
-      if( this._touchSession.virtualScrollable && this._touchSession.type.scroll ) {
+      if(    this._touchSession
+          && this._touchSession.virtualScrollable
+          && this._touchSession.type.scroll
+       ) {
         var outer = IScrollUtil.getOuterScrollables( this._touchSession.virtualScrollable )[ 0 ];
         outer.getIScroll().enable();
         outer.getIScroll()._start( event );

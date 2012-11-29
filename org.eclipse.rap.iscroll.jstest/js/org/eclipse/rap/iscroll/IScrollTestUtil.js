@@ -18,7 +18,7 @@ var MobileWebkitSupport = org.eclipse.rwt.MobileWebkitSupport;
 
 org.eclipse.rap.iscroll.IScrollTestUtil = {
 
-  touch : function( type, iscroll, pos, element ) {
+  touch : function( type, iscroll, pos, element, touchLength ) {
     var hasTouch = iscroll.getHasTouch();
     var eventType;
     switch( type ) {
@@ -40,10 +40,16 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "clientY" : pos[ 1 ],
         "target" : target
     };
+    var touches = [ touch ];
+    if( touchLength != undefined ) {
+      touches.length = touchLength;
+    } else if( type === "end" ) {
+      touches.length = 0;
+    }
     var fakeEv = {
       "_prevented" : false,
       "type" : eventType,
-      "touches" : type === "end" ? [] : [ touch ],
+      "touches" : touches,
       "changedTouches" : [ touch ],
       "pageX" : pos[ 0 ],
       "pageY" : pos[ 1 ],

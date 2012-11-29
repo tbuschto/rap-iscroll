@@ -130,6 +130,27 @@ qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       assertEquals( [ 40, 10 ], log[ 2 ] );
     },
 
+    // NOTE: This tests for a bug that caused an alert error to appear.
+    // Since errors in MobileWebkitSupport are currently caught
+    // and not re-thrown (see MobileWebkitSupport#_onTouchEvent), the error might appear
+    // but the test will still be (falsely) green.
+    testUserScrollEventsAfterTouchEnd : function() {
+      var log = [];
+      scrollable.addEventListener( "userScroll", function(){
+        log.push( IScrollTestUtil.getScrollBarValues( scrollable ) );
+      }, this );
+      var iscroll = scrollable.getIScroll();
+      var element = iscroll.scroller;
+
+      touch( "start", iscroll, [ 100, 100 ], element, 1 );
+      touch( "start", iscroll, [ 100, 90 ], element, 2 );
+      touch( "end", iscroll, [ 100, 90 ], element, 1 );
+      touch( "move", iscroll, [ 90, 90 ], element, 1 );
+      touch( "end", iscroll, [ 60, 90 ], element, 0 );
+
+      assertEquals( 1, log.length );
+    },
+
     testMovePreventDefault : function() {
       var log = [];
       var iscroll = scrollable.getIScroll();
