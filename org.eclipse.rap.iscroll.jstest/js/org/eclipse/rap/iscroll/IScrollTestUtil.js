@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
 
 (function(){
 
-var Processor = org.eclipse.rwt.protocol.Processor;
-var ObjectManager = org.eclipse.rwt.protocol.ObjectManager;
-var MobileWebkitSupport = org.eclipse.rwt.MobileWebkitSupport;
+var Processor = rwt.remote.MessageProcessor;
+var ObjectManager = rwt.remote.ObjectRegistry;
+var MobileWebkitSupport = rwt.runtime.MobileWebkitSupport;
 
 
 org.eclipse.rap.iscroll.IScrollTestUtil = {
@@ -31,7 +31,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
       case "end":
         eventType = hasTouch ? "touchend" : "mouseup";
       break;
-    };
+    }
     var target = element ? element : iscroll.scroller;
     var touch = {
         "pageX" : pos[ 0 ],
@@ -80,7 +80,6 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "style" : [],
         "parent" : "w2",
         "content" : "w4",
-        "scrollBarsVisible" : [ true, true ],
         "bounds" : [ 0, 0, 100, 100 ]
       }
     } );
@@ -94,7 +93,9 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "bounds" : [ 0, 0, 1000, 1000 ]
       }
     } );
-    return ObjectManager.getObject( "w3" );
+    var scrolledComposite = ObjectManager.getObject( "w3" );
+    scrolledComposite.setScrollBarsVisible( true, true );
+    return scrolledComposite;
   },
 
   createChildScrolledComposite : function() {
@@ -106,7 +107,6 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "style" : [],
         "parent" : "w4",
         "content" : "w6",
-        "scrollBarsVisible" : [ true, true ],
         "bounds" : [ 0, 0, 100, 100 ]
       }
     } );
@@ -120,11 +120,13 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
         "bounds" : [ 0, 0, 1000, 1000 ]
       }
     } );
-    return ObjectManager.getObject( "w5" );
+    var scrolledComposite = ObjectManager.getObject( "w5" );
+    scrolledComposite.setScrollBarsVisible( true, true );
+    return scrolledComposite;
   },
 
   createGrid : function() {
-    org.eclipse.rwt.protocol.Processor.processOperation( {
+    Processor.processOperation( {
       "target" : "w5",
       "action" : "create",
       "type" : "rwt.widgets.Grid",
@@ -141,7 +143,7 @@ org.eclipse.rap.iscroll.IScrollTestUtil = {
     } );
     var id = 10;
     for( var i = 0; i < 100; i++ ) {
-      org.eclipse.rwt.protocol.Processor.processOperation( {
+      Processor.processOperation( {
         "target" : "w" + id,
         "action" : "create",
         "type" : "rwt.widgets.GridItem",

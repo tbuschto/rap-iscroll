@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Matteo Spinelli and EclipseSource
+ * Copyright (c) 2011, 2013 Matteo Spinelli and EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *    EclipseSource - adaption for RAP framework
  ******************************************************************************/
 
-qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
+rwt.qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 (function(){
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource
+ * Copyright (c) 2012, 2013 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,15 +9,15 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
+rwt.qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 (function(){
 
-var Scrollable = org.eclipse.swt.widgets.Scrollable;
+var Scrollable = rwt.widgets.base.Scrollable;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
-var MobileWebkitSupport = org.eclipse.rwt.MobileWebkitSupport;
-var Client = org.eclipse.rwt.Client;
+var MobileWebkitSupport = rwt.runtime.MobileWebkitSupport;
+var Client = rwt.client.Client;
 
 org.eclipse.rap.iscroll.IScrollUtil = {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource
+ * Copyright (c) 2012, 2013 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,14 +9,14 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
+rwt.qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 (function(){
 
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollUtil = org.eclipse.rap.iscroll.IScrollUtil;
 
-qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
+rwt.qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
 
   construct : function() {
     this._iscroll = null;
@@ -74,7 +74,7 @@ qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
     _onClientCreate : function( evt ) {
       this._clientArea.prepareEnhancedBorder();
       this._clientArea.setContainerOverflow( false );
-      qx.html.Scroll.disableScrolling( this._clientArea.getElement() );
+      rwt.html.Scroll.disableScrolling( this._clientArea.getElement() );
       this._createIScroll();
     },
 

@@ -5,15 +5,9 @@
          point="org.eclipse.rap.ui.entrypoint">
       <entrypoint
             class="org.eclipse.rap.iscroll.demo.IScrollDemo"
-            id="org.eclipse.rap.iscroll.demo.entrypoint1"
+            id="org.eclipse.rap.iscroll.demo.entrypoint"
             path="/iscroll">
       </entrypoint>
-   </extension>
-   <extension
-         point="org.eclipse.rap.ui.resources">
-      <resource
-            class="org.eclipse.rap.iscroll.demo.internal.IScrollActivatorResrouce">
-      </resource>
    </extension>
 
 </plugin>

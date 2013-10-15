@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource and others.
+ * Copyright (c) 2012, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,10 @@
 
 package org.eclipse.rap.iscroll.demo;
 
-import org.eclipse.rap.rwt.lifecycle.IEntryPoint;
-import org.eclipse.rap.rwt.widgets.DialogUtil;
+import org.eclipse.rap.iscroll.IScroll;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.application.EntryPoint;
+import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
@@ -32,10 +34,11 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-public class IScrollDemo implements IEntryPoint {
+public class IScrollDemo implements EntryPoint {
 
   public int createUI() {
     Display display = new Display();
+    activateIScroll();
     Shell shell = new Shell( display, SWT.NONE );
     shell.setLayout( new GridLayout( 3, true ) );
     shell.setFullScreen( true );
@@ -53,7 +56,17 @@ public class IScrollDemo implements IEntryPoint {
   }
 
 
-  private List createList( Composite parent ) {
+  private static void activateIScroll() {
+    IScroll.activate();
+    JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
+    String script = "window.setTimeout(function() {\n" +
+                    "  org.eclipse.rap.iscroll.IScrollSupport.activate();\n" +
+                    "}, 0 );";
+    executor.execute( script );
+  }
+
+
+  private static List createList( Composite parent ) {
     List list = new List( parent, SWT.BORDER | SWT.V_SCROLL );
     list.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     for( int i = 0; i < 50; i++ ) {
@@ -62,7 +75,7 @@ public class IScrollDemo implements IEntryPoint {
     return list;
   }
 
-  private Table createTable( Composite parent ) {
+  private static Table createTable( Composite parent ) {
     Table table = new Table( parent, SWT.BORDER | SWT.FULL_SELECTION );
     table.setLinesVisible( true );
     table.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
@@ -72,7 +85,7 @@ public class IScrollDemo implements IEntryPoint {
     return table;
   }
 
-  private Composite createMiniScrolledComposite( Composite parent ) {
+  private static Composite createMiniScrolledComposite( Composite parent ) {
     final ScrolledComposite scrolledComposite = new ScrolledComposite( parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     scrolledComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     final Composite composite = createLabelComposite( scrolledComposite, 80 );
@@ -84,7 +97,7 @@ public class IScrollDemo implements IEntryPoint {
     return scrolledComposite;
   }
 
-  private void createScrolledComposite( Composite parent ) {
+  private static void createScrolledComposite( Composite parent ) {
     final ScrolledComposite scrolledComposite = new ScrolledComposite( parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     scrolledComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     final Composite composite = new Composite( scrolledComposite, SWT.NONE );
@@ -103,7 +116,7 @@ public class IScrollDemo implements IEntryPoint {
     composite.layout();
   }
 
-  private void createTextComposite( final Composite composite ) {
+  private static void createTextComposite( final Composite composite ) {
     Composite textComposite = new Composite( composite, SWT.NONE );
     textComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
     textComposite.setLayout( new GridLayout( 4, true ) );
@@ -113,7 +126,7 @@ public class IScrollDemo implements IEntryPoint {
   }
 
   @SuppressWarnings("serial")
-  private void createButtonComposite( final Composite composite ) {
+  private static void createButtonComposite( final Composite composite ) {
     Composite buttonComposite = new Composite( composite, SWT.NONE );
     buttonComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
     buttonComposite.setLayout( new GridLayout( 4, true ) );
@@ -121,6 +134,7 @@ public class IScrollDemo implements IEntryPoint {
       Button button = new Button( buttonComposite, SWT.PUSH );
       button.setText( "Button " + i );
       button.addSelectionListener( new SelectionAdapter() {
+        @Override
         public void widgetSelected( SelectionEvent e ) {
           MessageBox message = new MessageBox( composite.getShell() );
           message.setMessage( "SelectionEvent" );
@@ -133,7 +147,7 @@ public class IScrollDemo implements IEntryPoint {
   }
 
   @SuppressWarnings("serial")
-  private Composite createLabelComposite( final Composite composite, int number ) {
+  private static Composite createLabelComposite( final Composite composite, int number ) {
     Composite labelComposite = new Composite( composite, SWT.NONE );
     labelComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
     labelComposite.setLayout( new GridLayout( 4, true ) );

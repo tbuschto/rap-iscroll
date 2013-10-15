@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 EclipseSource
+ * Copyright (c) 2012, 2013 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,16 +9,16 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
+rwt.qx.Class.createNamespace( "org.eclipse.rap.iscroll", {} );
 
 (function(){
 
-var Scrollable = org.eclipse.swt.widgets.Scrollable;
+var Scrollable = rwt.widgets.base.Scrollable;
 var IScroll = org.eclipse.rap.iscroll.IScroll;
 var IScrollMixin = org.eclipse.rap.iscroll.IScrollMixin;
 var IScrollUtil = org.eclipse.rap.iscroll.IScrollUtil;
-var MobileWebkitSupport = org.eclipse.rwt.MobileWebkitSupport;
-var Client = org.eclipse.rwt.Client;
+var MobileWebkitSupport = rwt.runtime.MobileWebkitSupport;
+var Client = rwt.client.Client;
 
 org.eclipse.rap.iscroll.IScrollSupport = {
 
@@ -42,8 +42,8 @@ org.eclipse.rap.iscroll.IScrollSupport = {
   },
 
   _patchScrollable : function() {
-    qx.Class.__initializeClass( Scrollable );
-    qx.Class.patch( Scrollable, IScrollMixin );
+    rwt.qx.Class.__initializeClass( Scrollable );
+    rwt.qx.Class.patch( Scrollable, IScrollMixin );
   },
 
   _patchIScroll : function() {
@@ -61,7 +61,7 @@ org.eclipse.rap.iscroll.IScrollSupport = {
   _patchMobileWebkitSupport : function() {
     this._wrap( MobileWebkitSupport, "_initVirtualScroll", function( widget ) {
       var scrollable;
-      if( widget instanceof org.eclipse.rwt.widgets.GridRow ) {
+      if( widget instanceof rwt.widgets.base.GridRow ) {
         scrollable = widget.getParent().getParent();
       } else {
         scrollable = this._findScrollable( widget );

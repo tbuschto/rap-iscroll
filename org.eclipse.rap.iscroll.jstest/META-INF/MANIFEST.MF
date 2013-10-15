@@ -4,7 +4,9 @@ Bundle-Name: Jstest
 Bundle-SymbolicName: org.eclipse.rap.iscroll.jstest
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.rap.rwt.jstest,
- org.eclipse.rap.iscroll;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.rap.rwt.jstest;bundle-version="2.2.0",
+ org.eclipse.rap.iscroll;bundle-version="1.1.0"
 Service-Component: OSGI-INF/resourceContribution.xml, OSGI-INF/testContribution.xml
 Bundle-Vendor: EclipseSource
+Export-Package: org.eclipse.rap.iscroll;version="1.1.0",
+ org.eclipse.rap.iscroll.internal;version="1.1.0";x-internal:=true

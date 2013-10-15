@@ -25,12 +25,14 @@
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true&#13;&#10;-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"/>
 <stringAttribute key="org.eclipse.rap.launch.browserMode" value="INTERNAL"/>
 <stringAttribute key="org.eclipse.rap.launch.contextpath" value=""/>
-<stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.ui.launch/iScrollDemoDebug"/>
+<stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.tools.launch/iScrollDemoDebug"/>
+<booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="true"/>
 <stringAttribute key="org.eclipse.rap.launch.entryPoint" value=""/>
 <stringAttribute key="org.eclipse.rap.launch.libraryVariant" value="DEBUG"/>
 <booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="false"/>
-<intAttribute key="org.eclipse.rap.launch.port" value="10080"/>
+<intAttribute key="org.eclipse.rap.launch.port" value="8080"/>
 <stringAttribute key="org.eclipse.rap.launch.servletName" value="iscroll"/>
+<stringAttribute key="org.eclipse.rap.launch.servletPath" value="/iscroll"/>
 <intAttribute key="org.eclipse.rap.launch.sessionTimeout" value="0"/>
 <booleanAttribute key="org.eclipse.rap.launch.terminatePrevious" value="true"/>
 <booleanAttribute key="org.eclipse.rap.launch.useDefaultDataLocation" value="true"/>
@@ -39,8 +41,8 @@
 <booleanAttribute key="org.eclipse.rap.launch.useSessionTimeout" value="false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <setAttribute key="selected_features"/>
-<booleanAttribute key="show_selected_only" value="false"/>
-<stringAttribute key="target_bundles" value="com.ibm.icu.base@default:default,javax.servlet*3.0.0.v201112011016@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.databinding@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.http.jetty@default:default,org.eclipse.equinox.http.registry@default:default,org.eclipse.equinox.http.servlet@default:default,org.eclipse.equinox.http.servletbridge@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.servletbridge.extensionbundle@default:false,org.eclipse.equinox.servletbridge@default:default,org.eclipse.equinox.util@default:default,org.eclipse.help@default:default,org.eclipse.jetty.continuation@default:default,org.eclipse.jetty.http@default:default,org.eclipse.jetty.io@default:default,org.eclipse.jetty.security@default:default,org.eclipse.jetty.server@default:default,org.eclipse.jetty.servlet@default:default,org.eclipse.jetty.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.objenesis@default:default"/>
+<booleanAttribute key="show_selected_only" value="true"/>
+<stringAttribute key="target_bundles" value="com.ibm.icu.base@default:default,javax.servlet@default:default,javax.xml@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.databinding@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.http.jetty@default:default,org.eclipse.equinox.http.registry@default:default,org.eclipse.equinox.http.servlet@default:default,org.eclipse.equinox.http.servletbridge@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.servletbridge@default:default,org.eclipse.equinox.util@default:default,org.eclipse.help@default:default,org.eclipse.jetty.continuation@default:default,org.eclipse.jetty.http@default:default,org.eclipse.jetty.io@default:default,org.eclipse.jetty.security@default:default,org.eclipse.jetty.server@default:default,org.eclipse.jetty.servlet@default:default,org.eclipse.jetty.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true"/>
 <stringAttribute key="timestamp" value="1342710659130"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
