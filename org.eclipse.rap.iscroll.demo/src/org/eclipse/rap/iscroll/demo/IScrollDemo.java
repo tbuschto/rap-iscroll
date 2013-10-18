@@ -12,9 +12,7 @@
 package org.eclipse.rap.iscroll.demo;
 
 import org.eclipse.rap.iscroll.IScroll;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.EntryPoint;
-import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
@@ -38,7 +36,7 @@ public class IScrollDemo implements EntryPoint {
 
   public int createUI() {
     Display display = new Display();
-    activateIScroll();
+    IScroll.activate();
     Shell shell = new Shell( display, SWT.NONE );
     shell.setLayout( new GridLayout( 3, true ) );
     shell.setFullScreen( true );
@@ -54,17 +52,6 @@ public class IScrollDemo implements EntryPoint {
     display.dispose();
     return 0;
   }
-
-
-  private static void activateIScroll() {
-    IScroll.activate();
-    JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
-    String script = "window.setTimeout(function() {\n" +
-                    "  org.eclipse.rap.iscroll.IScrollSupport.activate();\n" +
-                    "}, 0 );";
-    executor.execute( script );
-  }
-
 
   private static List createList( Composite parent ) {
     List list = new List( parent, SWT.BORDER | SWT.V_SCROLL );

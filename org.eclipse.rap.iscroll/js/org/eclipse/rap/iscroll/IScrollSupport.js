@@ -24,12 +24,6 @@ org.eclipse.rap.iscroll.IScrollSupport = {
 
   _active : false,
 
-  autoActivate : function() {
-    if( Client.isAndroidBrowser() ) {
-      this.activate();
-    }
-  },
-
   activate : function() {
     if( !this._active ) {
       this._active = true;
@@ -92,6 +86,6 @@ org.eclipse.rap.iscroll.IScrollSupport = {
 
 };
 
-org.eclipse.rap.iscroll.IScrollSupport.autoActivate();
+org.eclipse.rap.iscroll.IScrollSupport.activate();
 
 }());
