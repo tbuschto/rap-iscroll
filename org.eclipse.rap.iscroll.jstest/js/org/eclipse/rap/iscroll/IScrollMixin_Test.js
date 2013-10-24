@@ -65,6 +65,7 @@ rwt.qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
       content.setWidth( 500 );
       content.setHeight( 1500 );
       TestUtil.flush();
+      TestUtil.forceTimerOnce();
 
       assertEquals( -410, scrollable.getIScroll().maxScrollX );
       assertEquals( -1410, scrollable.getIScroll().maxScrollY );
@@ -77,6 +78,16 @@ rwt.qx.Class.define( "org.eclipse.rap.iscroll.IScrollMixin_Test", {
 
       assertEquals( -960, scrollable.getIScroll().maxScrollX );
       assertEquals( -710, scrollable.getIScroll().maxScrollY );
+    },
+
+    testIScrollScrollerSizeChangedByContent : function() {
+      content.setWidth( 500 );
+      content.setHeight( 1500 );
+      TestUtil.flush();
+      TestUtil.forceTimerOnce();
+
+      assertEquals( 500, scrollable.getIScroll().scrollerW );
+      assertEquals( 1500, scrollable.getIScroll().scrollerH );
     },
 
     testSetScrollbarSelection : function() {
