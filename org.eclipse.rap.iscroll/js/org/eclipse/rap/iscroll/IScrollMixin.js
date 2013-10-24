@@ -125,7 +125,10 @@ rwt.qx.Mixin.define( "org.eclipse.rap.iscroll.IScrollMixin", {
       };
       this._clientArea._flushChildrenQueue = function() {
         this.constructor.prototype._flushChildrenQueue.call( this );
-        that._refreshScroller();
+        // delay because this is still before the client area might get bigger in the display flush
+        rwt.client.Timer.once( function() {
+          that._refreshScroller();
+        }, this, 0 );
       };
     },
 
